@@ -63,13 +63,30 @@ contains an up to date list of the currently supported languages.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (sh . t)))
+     (python . t)
+     (ipython . t)
+     (js . t)
+     (sql .t)
+     (java .t)
+     (perl . t)
+     (R . t)
+     (translate . t)))
 #+end_src
+
+#+RESULTS:
 
 You are encouraged to add the following to your personal configuration
 although it is not added by default as a security precaution.
 #+begin_src emacs-lisp :tangle no
   (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+  ;; Fix an incompatibility between the ob-async and ob-ipython packages
+  (setq ob-async-no-async-languages-alist '("ipython"))
+  (setq org-confirm-babel-evaluate
+        (lambda (lang body)
+          (not (string= lang "sql-mode"))))
 #+end_src
 
 ** Code block fontification

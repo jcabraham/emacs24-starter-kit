@@ -1,0 +1,22 @@
+#+TITLE: Starter Kit Custom 
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is an example, or shell, of a starter kit custom package. Copy,
+modify, load.
+
+* Starter Kit Custom
+Custom starter kit template
+
+#+begin_src emacs-lisp
+; maybe include eval-after-load
+;(eval-after-load 'cperl-mode
+;  '(progn
+;     (define-key cperl-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+;     (define-key cperl-mode-map (kbd "C-M-h") 'backward-kill-word)))
+
+;(global-set-key (kbd "C-h P") 'perldoc)
+
+;(add-to-list 'auto-mode-alist '("\\.p[lm]$" . cperl-mode))
+;(add-to-list 'auto-mode-alist '("\\.pod$" . pod-mode))
+;(add-to-list 'auto-mode-alist '("\\.tt$" . tt-mode))
+#+end_src

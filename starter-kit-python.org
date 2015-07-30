@@ -12,8 +12,10 @@ Support for the Python programming language.
 Determine whether required packages are installed. If not, use ELPA to
 install them.
 #+begin_src emacs-lisp
-  (starter-kit-install-if-needed 'python-mode 'ipython)
+  (starter-kit-install-if-needed 'python-mode 'ipython 'elpy 'py-autopep8)
 #+end_src
+
+#+RESULTS:
 
 ** Use Python's python-mode.el instead of Emacs' python.el
    :PROPERTIES:
@@ -37,3 +39,23 @@ supplied by the Python distribution itself.
     (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
     (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode)))
 #+end_src
+** Elpy setup
+   :PROPERTIES:
+   :CUSTOM_ID: python
+   :END:
+#+begin_src emacs-lisp
+  (require 'py-autopep8)
+  (elpy-enable)
+  (setq python-shell-interpreter "jupyter"
+        python-shell-interpreter-args "console --simple-prompt"
+        python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+               "jupyter")
+
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+  (add-hook 'elpy-mode-hook (lambda () (elpy-shell-toggle-dedicated-shell 1)))
+#+end_src
+
+#+RESULTS:
+| (lambda nil (elpy-shell-toggle-dedicated-shell 1)) | py-autopep8-enable-on-save |
+

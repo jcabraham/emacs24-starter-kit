@@ -1,0 +1,46 @@
+#+TITLE: Starter Kit ESS
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* Starter Kit ESS
+
+** Check Dependencies
+Determine whether required packages are installed. If not, use ELPA to
+install them.
+#+begin_src emacs-lisp
+  (starter-kit-install-if-needed 
+   'ess
+   'company)
+#+end_src
+
+#+RESULTS:
+
+** ESS Configure
+#+begin_src emacs-lisp
+  (load "ess-autoloads")
+  (require 'ess-site)
+  (require 'company)
+  (setq ess-use-company t)
+  (setq tab-always-indent 'complete)
+  (global-company-mode) 
+  (setq ess-directory "/tmp")
+  (setq ess-ask-for-ess-directory nil)
+  (add-hook 'ess-mode-hook 'my-ess-hook)
+
+  (with-eval-after-load 'ess
+    (setq ess-use-company t))
+
+  ;;  (define-key company-active-map (kbd "M-h") 'company-show-doc-buffer)
+;;  (define-key company-active-map [return] nil)
+;;  (define-key company-active-map [tab] 'company-complete-common)
+;;  (define-key company-active-map (kbd "TAB") 'company-complete-common)
+;;  (define-key company-active-map (kbd "M-TAB") 'company-complete-selection)
+  (setq company-selection-wrap-around t
+        company-tooltip-align-annotations t
+        company-idle-delay 0.36
+        company-minimum-prefix-length 2
+        company-tooltip-limit 10)
+#+end_src
+
+#+RESULTS:
+: 10
+

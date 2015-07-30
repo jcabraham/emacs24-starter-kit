@@ -1,0 +1,86 @@
+#+TITLE: Starter Kit Custom 
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is an example, or shell, of a starter kit custom package. Copy,
+modify, load.
+
+* Starter Kit Custom
+Custom starter kit template
+
+** Check Dependencies
+Determine whether required packages are installed. If not, use ELPA to
+install them.
+#+begin_src emacs-lisp
+  (starter-kit-install-if-needed 'ob-sql-mode)
+#+end_src
+
+** SQL Customization
+#+begin_src emacs-lisp
+  (require 'ob-sql-mode)
+    (setq org-confirm-babel-evaluate
+          (lambda (lang body)
+            (not (string= lang "sql-mode"))))
+
+    (defun sql-add-newline-first (output)
+      "Add newline to beginning of OUTPUT for `comint-preoutput-filter-functions'
+      This fixes up the display of queries sent to the inferior buffer
+      programatically."
+      (concat "\n" output))
+
+    (defun sqli-add-hooks ()
+      "Add hooks to `sql-interactive-mode-hook'."
+      (add-hook 'comint-preoutput-filter-functions
+                'sql-add-newline-first))
+
+    (add-hook 'sql-interactive-mode-hook 'sqli-add-hooks)
+
+    (defun my-sql-save-history-hook ()
+      (let ((lval 'sql-input-ring-file-name)
+            (rval 'sql-product))
+        (if (symbol-value rval)
+            (let ((filename
+                   (concat "~/.emacs.d/sql/"
+                           (symbol-name (symbol-value rval))
+                           "-history.sql")))
+              (set (make-local-variable lval) filename))
+          (error
+           (format "SQL history will not be saved because %s is nil"
+                   (symbol-name rval))))))
+
+    (add-hook 'sql-interactive-mode-hook 'my-sql-save-history-hook)
+
+    (setq sql-connection-alist
+          '((test (sql-product 'postgres)
+                  (sql-port 5432)
+                  (sql-server "localhost")
+                  (sql-user "test")
+                  (sql-password "test")
+                  (sql-database "test"))
+            (jcabraham (sql-product 'postgres)
+                       (sql-port 5432)
+                       (sql-server "localhost")
+                       (sql-user "jcabraham")
+                       (sql-password "jcabraham")
+                       (sql-database "jcabraham"))))
+
+    (defun my-sql-connect (product connection)
+      ;; remember to set the sql-product, otherwise, it will fail for the first time
+      ;; you call the function
+      (setq sql-product product)
+      (sql-connect connection))
+
+    (defun connect-test ()
+      (interactive)
+      (my-sql-connect 'postgres 'test))
+
+    (defun connect-bar ()
+      (interactive)
+      (my-sql-connect 'postgres 'bar))
+
+    (defun connect-jcabraham ()
+      (interactive)
+      (my-sql-connect 'postgres 'bar))
+#+end_src
+
+#+RESULTS:
+: connect-jcabraham
